@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<style>
+	.container-1 {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: center;
+		
+	}
+	.container-1 p {
+	
+	}
+	.container-1 div {
+		padding:10px;
+		border: 1px solid silver;
+		text-align: center;
+	}
+	.box-1{
+		width: 20%
+		
+	}
+	.box-1 div{
+		font-size: 45;
+		
+	}
+	
+	.box-2{
+		display: flex;
+		width: 20%;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+	
+	}
+	.box-2 div {
+		padding:10px;
+		border: 0px solid silver;
+		
+	}
+	.box-2 p {
+		
+		border: 0px solid silver;
+		text-align: center;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.degree
+	{
+		font-size: 45;
+		font-family: sant-serif;
+		color:#FF69B4;
+	}
+	.box-3{
+		width: 20%
+	}
+	.tab { margin-left: 20px; }
+	
+	.box-2_3{
+		color:#2F4F4F;
+		
+	}
+	select#list1 {
+    max-width: 200px;
+    min-width: 200px;
+    width: 150px !important;
+	font-size: 18
+}
+	
+</style>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  
+  $("#list1").change(function (){
+  let city = $('#list1 option:selected').text()
+    $.get("https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=051778c90f1f137c6d0b1e8a9462b105", function(data, status){
+     
+	   $("#now").text("+"+Math.round(data.main.temp-273.15));
+	   $("#minmax").text("Мин: +"+Math.round(data.main.temp_min-273.15)+", Макс: +"+Math.round(data.main.temp_max-273.15));
+	   $("#humidity").text("Влажность: "+data.main.humidity+"%");
+	 
+	   $("#im").attr("src", "http://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png");
+		
+		
+	   
+    });
+  });
+});
+</script>
+</head>
+
+<div class="container-1">
+  <div class="box-1">
+    <h2>Погода</h2>
+	<p>
+	<select id="list1" class="tab" required="required">
+	  <option disabled selected value> Укажите город... </option>
+	  <option>London</option>
+	  <option>Moscow</option>
+	  <option>Minsk</option>
+	 </select></p>
+	 
+  </div>
+  <div class="box-2">
+    <div class="box-2_1"> 
+	<p>Сейчас:</p><br>
+	<p class="degree" id="now"></p>
+	
+	</div>
+	<div class="box-2_2">
+	<img id="im">
+	</div>
+	<div class="box-2_3">
+		<p class="degree_minmax" id="minmax"></p>
+		<p class="degree_minmax" id="humidity"></p>
+		<p class="degree_minmax" id="wind"></p>
+	</div>
+	
+</div>
+  
+  
+</div>
+
+
+</html>
