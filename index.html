@@ -1,135 +1,437 @@
-<!DOCTYPE html>
-<html>
 <style>
-@media screen and (max-width: 600px) {
-	.container-1 {
-		display: block;
-		width: 100%;
-		
-	}
 
+@media all and (max-width: 500px){
+.container-main,.container-1,.container-2{
+	width: 100%;
+	font-family: Century Gothic;
+	flex-direction: column;
+	flex-wrap: wrap;
 	
-}	.container-1 {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		width: 100%;
-		
-	}
-	.container-1 p {
-	
-	}
-	.container-1 div {
-		padding:10px;
-		border: 1px solid silver;
-		text-align: center;
-	}
-	.box-1{
-		width: 100%
-		
-	}
-	.box-1 div{
-		font-size: 45;
-		
-	}
-	
-	.box-2{
-		display: flex;
-		width: 100%;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-	
-	}
-	.box-2 div {
-		padding:10px;
-		border: 0px solid silver;
-		
-	}
-	.box-2 p {
-		
-		border: 0px solid silver;
-		text-align: center;
-		margin-top: 0;
-		margin-bottom: 0;
-	}
-	.degree
-	{
-		font-size: 45;
-		font-family: sant-serif;
-		color:#FF69B4;
-	}
-	.box-3{
-		width: 20%
-	}
-	.tab { margin-left: 20px; }
-	
-	.box-2_3{
-		color:#2F4F4F;
-		
-	}
-	select#list1 {
-	        width: 60% !important;
-		font-size: 18
+}
 
 }
-</style>
+.container-main,.container-1,.container-2,.box-2 {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		width: 100%;
+		font-family: Century Gothic;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+.container-main {	
+align: center;
+		flex-direction: column;
+		gap: 1rem;
+		width: 90%	
+	}
+.container-1 {	
+background-color: #FFFFFF;
+box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+
+border: 1px solid #FFFFFF;
+border-radius: 10px;
+		flex-direction: row;
+		
+	}
+.container-2 {	
+box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+background-color: #FFFFFF;
+
+border: 1px solid #FFFFFF;
+border-radius: 10px;
+		flex-direction: row;
+	
+		
+		
+	}
+.container-main div {
+		padding:5px;
+		
+		text-align: center;
+	}
+.box-1{
+
+
+width: calc(100%/2);
+}
+.box-2{
+
+		flex-direction: row;
+		flex-wrap: nowrap;
+		flex-grow:1
+	
+
+	}
+.box-2_1,.box-2_2,.box-2_3{
+	
+	}
+.box-3,.box-4,.box-5,.box-6,.box-7{
+box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5);
+margin: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	flex-grow:1
+}
+#now{
+	font-size: 55;
+		
+		color:#000080;
+}
+select#list1 {
+    
+    width: 60% !important;
+	font-size: 18
+
+}
+.forecast_now{
+font-weight: bold;
+}
+
+.forecast{
+font-size: 15;
+}
+button{
+font-family: Century Gothic;
+	
+	
+	background: transparent;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 5px 5px;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+   margin:10px 0px 0px 0px
+ 
+}
+#txt1{
+font-family: Century Gothic;
+}
+
+
+button:hover {
+   background: #F0F8FF;
+
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  
+}
+
+.table_now{
+ width: 100%;
+  table-layout: fixed;
+}
+
+#td1 {
+	text-align: center
+}
+p {
+  margin: 0em;
+}
+
+</style>	
 <head>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
 $(document).ready(function(){
-  
-  $("#list1").change(function (){
-  let city = $('#list1 option:selected').text()
-    $.get("https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=051778c90f1f137c6d0b1e8a9462b105", function(data, status){
+$.get("http://ip-api.com/json/", function(geo, status){
+let city = geo.city;
+//alert(city)
+$('#txt1').val(city)
+if (city!=null)
+{
+	 getInfo(city)
+}
+
+  $("button").click(function(){
+	event.preventDefault()
+	
+	getInfo($('#txt1').val())
+  });
+  });
+  return false;
+});
+
+function getInfo(city)
+{
+	$.get("http://api.openweathermap.org/data/2.5/find?q="+city+"&type=like&appid=051778c90f1f137c6d0b1e8a9462b105", function(data, status){
+	
+	//alert(JSON.stringify(data.message.like))
+	let city_id = data.list[0].id
+	let city_name = data.list[0].name
+	$.get("https://api.openweathermap.org/data/2.5/weather?q="+city_name+"&units=metric&lang=RU&appid=051778c90f1f137c6d0b1e8a9462b105", function(data, status){
+	
+	
      
-	   $("#now").text("+"+Math.round(data.main.temp-273.15));
-	   $("#minmax").text("Мин: +"+Math.round(data.main.temp_min-273.15)+", Макс: +"+Math.round(data.main.temp_max-273.15));
+	   $("#now").text(data.main.temp<=0 ? Math.round(data.main.temp) : "+"+Math.round(data.main.temp));
+	   $("#min").text("Мин: "+(data.main.temp_min<=0  ? Math.round(data.main.temp_min) : "+"+Math.round(data.main.temp_min)));
+	   $("#max").text("Макс: "+(data.main.temp_max<=0 ? Math.round(data.main.temp_max) : "+"+Math.round(data.main.temp_max)));
 	   $("#humidity").text("Влажность: "+data.main.humidity+"%");
-	 
+	   $("#conditions").text(data.weather[0].description);
 	   $("#im").attr("src", "http://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png");
 		
-		
+	   $.get("https://api.openweathermap.org/data/2.5/forecast?id="+city_id+"&units=metric&lang=RU&appid=051778c90f1f137c6d0b1e8a9462b105", function(data, status){
+			
+			//alert(forecast)
+			//let dataToJson = JSON.parse(data); // парсим в объект
+
+			//console.log(dataToJson.firstweek); // первый массив firstweek
+			let forecast = data.list
+			let i=1
+			let temp_day_obj = []
+			let temp_night_obj = []
+			let dates = []
+			for (let key in forecast ) {
+				
+			  //console.log(new Date(data.list[0].dt).getDate()); // выводит ключи в объекте
+				console.log("data[key] - "+forecast[key])
+				console.log("key = "+key)
+				console.log(i)
+				
+				
+				
+				
+				let date = new Date(forecast[key].dt*1000)
+				let isoDate = ("0"+date.getDate()).slice(-2)+"."+("0"+(date.getMonth()+1)).slice(-2); // 2014-08-05T19:42:51.429Z
+				let week_day = getWeekDay(date)
+				
+				
+				
+				if (date.getHours()==15)
+				{
+					let temp_day = forecast[key].main.temp<=0 ? Math.round(forecast[key].main.temp) : "+"+Math.round(forecast[key].main.temp)
+					let humid = forecast[key].main.humidity
+					let desc = forecast[key].weather[0].description
+					let icon = forecast[key].weather[0].icon
+					temp_day_obj.push([temp_day,humid,desc,icon,isoDate,week_day])
+					
+					i=i+1
+				}
+				if (date.getHours()==03)
+				{
+					let temp_night = forecast[key].main.temp<=0 ? Math.round(forecast[key].main.temp) : "+"+Math.round(forecast[key].main.temp)
+					temp_night_obj.push([temp_night])
+					i=i+1
+					
+					/*$(`#f_${i}_temp_night`).text("Ночь: "+temp_night)
+					$(`#f_${i}_temp_day`).text("День: "+temp_day)
+					$(`#f_${i}_humidity`).text("Влажность: "+"%")
+					$(`#f_${i}_desc`).text(desc)
+					$(`#f_${i}_icon`).attr("src", "http://openweathermap.org/img/wn/"+forecast[key].weather[0].icon+"@2x.png");	*/
+				}
+				
+				
+				
+				//console.log($(`.building[data-id="${id}"]`).text());
+			//"temp_min":6.49,"temp_max"
+			//"weather":[{"id":803,"main":"Clouds","description"
+			}
+			temp_night_obj.forEach(function(e,index)
+			{
+				$(`#f_${index+1}_temp_night`).text("Ночь: "+e)
+				$(`#f_${index+1}_temp_day`).text("День: "+temp_day_obj[index][0])
+				$(`#f_${index+1}_humidity`).text("Влажность: "+temp_day_obj[index][1]+"%")
+				$(`#f_${index+1}_desc`).text(temp_day_obj[index][2])
+				$(`#f_${index+1}_icon`).attr("src", "http://openweathermap.org/img/wn/"+temp_day_obj[index][3]+"@2x.png");			
+				$(`#f_${index+1}`).text(temp_day_obj[index][4]+" "+temp_day_obj[index][5]+": ")
+			
+			
+			})
+
+	   console.log("temp_night_obj = "+temp_night_obj)
+	     console.log("temp_day_obj = "+temp_day_obj)
+	   })
 	   
     });
-  });
-});
+	
+  })
+}
+function getWeekDay(date)
+{
+	let day = date.getDay()
+	switch (day)
+	{	
+		case 1:
+		return "Пн";
+		break;
+		case 2:
+		return "Вт";
+		break;
+		case 3:
+		return "Ср";
+		break;
+		case 4:
+		return "Чт";
+		break;
+		case 5:
+		return "Пт";
+		break;
+		case 6:
+		return "Сб";
+		break;
+		case 0:
+		return "Вс";
+		break;
+	}
+}
+
 </script>
-</head>
-
-<div class="container-1">
-  <div class="box-1">
-    <h2>Погода</h2>
-	<p>
-	<select id="list1" class="tab" required="required">
-	  <option disabled selected value> Укажите город... </option>
-	  <option>London</option>
-	  <option>Moscow</option>
-	  <option>Minsk</option>
-	 </select></p>
-	 
-  </div>
-  <div class="box-2">
-    <div class="box-2_1"> 
-	<p>Сейчас:</p><br>
-	<p class="degree" id="now"></p>
+</head>	
 	
+<div class="container-main">
+	<div class="container-1">
+		<div class="box-1">
+		
+		<h2>Погода в городе</h2>
+		<p>
+		<form>
+			<input id="txt1" type="text" ><br>
+			<p><button>Узнать</button></p>
+		</form>
+
+		
+
+		</div>
+		<div class="box-2">
+		
+			<div class="box-2_1"> 
+			
+		<p>Сейчас:</p><br></td>
+		
+		<p class="degree" id="now" ></p>
+		
+		
+		
+				
+				
+			</div>
+			<div class="box-2_2">
+				<img width="150px" id="im">
+			</div>
+			
+			
+			<div class="box-2_3">
+			<br>
+				<p class="degree_minmax" id="min"></p>
+				<p class="degree_minmax" id="max"></p>
+				<p class="degree_minmax" id="humidity"></p>
+				<p class="degree_minmax" id="conditions"></p>
+				<p class="degree_minmax" id="wind"></p>
+				<p class="degree_minmax" id="testt"></p>
+			</div>
+			
+			
+
+			</div>
+
+
 	</div>
-	<div class="box-2_2">
-	<img id="im">
-	</div>
-	<div class="box-2_3">
-		<p class="degree_minmax" id="minmax"></p>
-		<p class="degree_minmax" id="humidity"></p>
-		<p class="degree_minmax" id="wind"></p>
-	</div>
+	<div class="container-2">
+		<div class="box-3">
+		<table>
+		<tr class="row_1">
+			<td id="td1">
+				<p class="forecast_now" id="f_1"></p>
+				<img id="f_1_icon">
+			</td>
+			<td>
+				<p class="forecast" id="f_1_temp_night"></p>
+				<p class="forecast" id="f_1_temp_day"></p>
+				<p class="forecast" id="f_1_humidity"></p>
+				<p class="forecast" id="f_1_desc"></p>
+			</td>
+		</tr>
+		</table>
+			
 	
+		</div>
+		<div class="box-4">
+		
+		<table>
+		<tr class="row_1">
+			<td id="td1">
+				<p class="forecast_now" id="f_2"></p>
+				<img id="f_2_icon">
+			</td>
+			<td>
+				<p class="forecast" id="f_2_temp_night"></p>
+				<p class="forecast" id="f_2_temp_day"></p>
+				<p class="forecast" id="f_2_humidity"></p>
+				<p class="forecast" id="f_2_desc"></p>
+			</td>
+		</tr>
+		</table>
+
+		</div>
+		<div class="box-5">
+		
+		<table>
+		<tr class="row_1">
+			<td id="td1">
+				<p class="forecast_now" id="f_3"></p>
+				<img id="f_3_icon">
+			</td>
+			<td>
+				<p class="forecast" id="f_3_temp_night"></p>
+				<p class="forecast" id="f_3_temp_day"></p>
+				<p class="forecast" id="f_3_humidity"></p>
+				<p class="forecast" id="f_3_desc"></p>
+			</td>
+		</tr>
+		</table>
+
+		</div>
+		<div class="box-6">
+		
+		<table>
+		<tr class="row_1">
+			<td id="td1">
+				<p class="forecast_now" id="f_4"></p>
+				<img id="f_4_icon">
+			</td>
+			<td>
+				<p class="forecast" id="f_4_temp_night"></p>
+				<p class="forecast" id="f_4_temp_day"></p>
+				<p class="forecast" id="f_4_humidity"></p>
+				<p class="forecast" id="f_4_desc"></p>
+			</td>
+		</tr>
+		</table>
+
+		</div>
+		<div class="box-7">
+		
+		<table>
+		<tr class="row_1">
+			<td id="td1">
+				<p class="forecast_now" id="f_5"></p>
+				<img id="f_5_icon">
+			</td>
+			<td>
+				<p class="forecast" id="f_5_temp_night"></p>
+				<p class="forecast" id="f_5_temp_day"></p>
+				<p class="forecast" id="f_5_humidity"></p>
+				<p class="forecast" id="f_5_desc"></p>
+			</td>
+		</tr>
+		</table>
+
+		</div>
+		
+
+
+	</div>
+
+
 </div>
-  
-  
-</div>
-
-
-
-</html>
