@@ -147,7 +147,7 @@ p {
 $(document).ready(function(){
 $.get("http://ip-api.com/json/", function(geo, status){
 let city = geo.city;
-//alert(city)
+alert(city)
 $('#txt1').val(city)
 if (city!=null)
 {
